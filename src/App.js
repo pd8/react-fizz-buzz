@@ -1,9 +1,55 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import logo from './assets/svg/logo.svg';
 import './assets/css/App.css';
+import Fizz from './components/fizz';
+import Buzz from './components/buzz';
+import FizzBuzz from './components/fizzbuzz';
+import Panel from './components/panel';
+
+function displayComponent(val) {
+  console.log(val);
+  if (val % 3 === 0 && val % 5 === 0) {
+    return <FizzBuzz key={val} value={val} />;
+  } else if (val % 5 === 0) {
+    return <Buzz key={val} value={val} />;
+  } else if (val % 3 === 0) {
+    return <Fizz key={val} value={val} />;
+  } else {
+    return <Panel key={val} value={val} />;
+  }
+}
 
 class App extends Component {
+  constructor(...props) {
+    super(...props);
+    
+    this.state = {
+      upperLimit: 100,
+      list: []
+    }
+
+    for (let i = 0; i <= this.state.upperLimit; i++) {
+      this.state.list.push(i);
+    }
+  }
+
+  handleChange = (e) => {
+    this.handleRangeChange();
+  }
+
+  handleRangeChange = () => {
+    const val = document.getElementById('myRange').value;
+    this.setState({upperLimit: val});
+    const arr = [];
+    for (let i = 0; i <= this.state.upperLimit; i++) {
+      arr.push(i);
+    }
+    this.setState({list: arr});
+  }
+
   render() {
+    const { upperLimit, list } = this.state;
+    console.log('list', list);
     return (
       <div className="App">
         <header className="App-header">
@@ -13,6 +59,11 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
+        <input type="range" id="myRange" defaultValue={upperLimit} max="1000" onChange={this.handleChange} style={{"width": "100%"}} />
+        <br />
+        {
+          list.map(displayComponent)
+        }
       </div>
     );
   }
