@@ -7,7 +7,6 @@ import FizzBuzz from './components/fizzbuzz';
 import Panel from './components/panel';
 
 function displayComponent(val) {
-  console.log(val);
   if (val % 3 === 0 && val % 5 === 0) {
     return <FizzBuzz key={val} value={val} />;
   } else if (val % 5 === 0) {
@@ -25,11 +24,6 @@ class App extends Component {
     
     this.state = {
       upperLimit: 100,
-      list: []
-    }
-
-    for (let i = 0; i <= this.state.upperLimit; i++) {
-      this.state.list.push(i);
     }
   }
 
@@ -40,16 +34,14 @@ class App extends Component {
   handleRangeChange = () => {
     const val = document.getElementById('myRange').value;
     this.setState({upperLimit: val});
-    const arr = [];
-    for (let i = 0; i <= this.state.upperLimit; i++) {
-      arr.push(i);
-    }
-    this.setState({list: arr});
   }
 
   render() {
-    const { upperLimit, list } = this.state;
-    console.log('list', list);
+    const { upperLimit } = this.state;
+    const elems = [];
+    for (let i = 0; i <= this.state.upperLimit; i++) {
+      elems.push(displayComponent(i));
+    }
     return (
       <div className="App">
         <header className="App-header">
@@ -62,7 +54,7 @@ class App extends Component {
         <input type="range" id="myRange" defaultValue={upperLimit} max="1000" onChange={this.handleChange} style={{"width": "100%"}} />
         <br />
         {
-          list.map(displayComponent)
+          elems
         }
       </div>
     );
